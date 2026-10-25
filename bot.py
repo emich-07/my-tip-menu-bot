@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
@@ -11,8 +12,8 @@ from openai import AsyncOpenAI
 logging.basicConfig(level=logging.INFO)
 
 # ================= НАСТРОЙКИ =================
-BOT_TOKEN = "8736139685:AAG0gipkGaGJkLiFsLlGxgNLhrKPYsyVwpA"
-AI_KEY = "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"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+AI_KEY = os.getenv("AI_KEY")
 
 ai_client = AsyncOpenAI(
     base_url="https://openrouter.ai/api/v1",
