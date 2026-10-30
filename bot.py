@@ -288,6 +288,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
             "FORMAT: ACTION ON ONE LINE, PRICE ON THE NEXT LINE. 1. EXACTLY 10 goals. "
             "2. Prices MUST BE INCREASING, BUT LOW AND AFFORDABLE (start from 10-15 tokens, max price should not exceed 350 tokens). "
             "3. Actions must be SHORT, CLEAR AND DIRECT."
+            "\nCRITICAL OVERRIDE: IGNORE the 30 positions rule and the 10000 max price from the examples below. FOR THIS REQUEST, YOU MUST GENERATE EXACTLY 10 GOALS AND MAX PRICE 350."
             f"{strict_rules}"
             f"{examples}"
             f"{category_prompt}"
