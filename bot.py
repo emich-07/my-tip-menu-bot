@@ -276,37 +276,6 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
     )
 
     examples = (
-        "\nEXAMPLES OF PERFECT POSITIONS (USE THIS EXACT LAYOUT: ACTION ON ONE LINE, PRICE ON THE NEXT LINE):"
-        "\nBlow a kiss 💋"
-        "\n11"
-        "\nSpanks 🤚 3x"
-        "\n15"
-        "\nSuck finger 👆"
-        "\n25"
-        "\nFAP TAX"
-        "\n33"
-        "\nDo a spin 💞"
-        "\n40"
-        "\nHEELS ON"
-        "\n51"
-        "\nFlash boobies 🍒"
-        "\n66"
-        "\nPUSSY TAX"
-        "\n66"
-        "\nDoggy 🙀"
-        "\n75"
-        "\nLush Control for 5 mins 🎮"
-        "\n444"
-        "\nFuck machine CTL 5 min"
-        "\n777"
-        "\nPlay cumshow"
-        "\n4999"
-        "\nMarry me 💍"
-        "\n7777"
-        "\nDay off 🛌"
-        "\n10000"
-    )
-    examples = (
         "\nEXAMPLES OF GOOD POSITIONS (FOLLOW THIS CUTE, PERSONALIZED AND EMOTIONAL STYLE):"
         "\n⭐ Pleasure to see you (5)\n😘 Kiss for you (7)\n✨ No way you look that good (12)\n💌 PM (15)\n😊 Smile for me (17)\n🤤 You're horny (19)\n🍑 Show & squeeze your tits (105)\n😈 Spam this to make me CUM (111)\n🤫 Whispering your name (112)\n👀 Who's an obedient girl (125)\n🐶 Slow sensual doggy (130)\n🛏️ Ride pillow & MOAN (139)\n🔥 Get naked (188)\n💦 Pussy fingering (234)\n🍆 Blowjob (300)\n🍑 Butt plug in, please (445)\n🪄 Lush / Nora Control 5 min (550)\n💐 Buy me flowers (555)\n📱 Get my Snapchat (666)\n💖 Lush / Nora Control 10 min (900)\n🎁 Buy me a gift (1234)\n💍 Marry me (6669)\n👑 Day off Queen (10000)"
     )
