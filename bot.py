@@ -193,7 +193,12 @@ async def description_received(message: Message, state: FSMContext):
     mode = data.get("mode", "strips")
     description = message.text
 
-    forbidden = ["встреч", "эскорт", "escort", "проститут", "менструац", "рвот", "фекал", "моч", "животн", "animal"]
+    forbidden = [
+        # Русские (встречи, эскорт, жесть)
+        "встреч", "эскорт", "проститут", "менструац", "рвот", "фекал", "моч", "животн", "живот", "собак", "кошк", "смерт", "убийств", "школьн", "детск",
+        # Английские (встречи, эскорт, насилие, дети, животные)
+        "escort", "meet", "real life", "irl", "animal", "dog", "cat", "child", "kid", "teen", "school", "underage", "blood", "vomit", "scat", "piss", "death", "kill", "gore"
+    ]
     found = [word for word in forbidden if word in description.lower()]
 
     if found:
