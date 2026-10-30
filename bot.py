@@ -76,7 +76,10 @@ async def cb_main_menu(call: CallbackQuery, state: FSMContext):
             )
         )
     except Exception:
-        await call.message.delete()
+        try:
+                await call.message.delete()
+        except Exception as e:    
+                logging.warning(f"Не удалось удалить сообщение: {e}")
         await send_main_menu(call.message, state)
 
 @dp.callback_query(F.data.startswith("platform:"))
