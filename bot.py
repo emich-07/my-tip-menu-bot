@@ -419,7 +419,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
 
         try:
             await message.answer(
-                f"🔥 <b>Вот твои {title} ({'Ноу нюд' if mode == 'nonude' else 'Фри чат'}):</b>\n\n<pre>{menu_text}</pre>",
+                f"🔥 <b>Вот твои {title}:</b>\n\n<pre>{menu_text}</pre>\n\n💡 <i>Если хочешь что-то изменить, просто напиши мне текстом.</i>",
                 parse_mode="HTML",
                 reply_markup=kb
             )
