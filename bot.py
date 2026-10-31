@@ -274,11 +274,31 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         "\n2. STRICTLY FORBIDDEN to list food, drinks, animals, or random objects (no apples, pizza, cats)."
         "\n3. STRICTLY FORBIDDEN to offer real-life meetings or escort services."
         "\n4. DIVERSITY RULE: Do not repeat the same body part (e.g., 'boobs') more than 3 times. Vary the actions."
+        "\n5. FORMAT: ENGLISH ACTION — RUSSIAN TRANSLATION ON ONE LINE. THE PRICE MUST BE ON THE NEXT LINE. Example: 'Hello 👋 — Привет 👋' then newline '3'."
     )
 
     examples = (
-        "\nEXAMPLES OF GOOD POSITIONS (FOLLOW THIS CUTE, PERSONALIZED AND EMOTIONAL STYLE):"
-        "\n⭐ Pleasure to see you (5)\n😘 Kiss for you (7)\n✨ No way you look that good (12)\n💌 PM (15)\n😊 Smile for me (17)\n🤤 You're horny (19)\n🍑 Show & squeeze your tits (105)\n😈 Spam this to make me CUM (111)\n🤫 Whispering your name (112)\n👀 Who's an obedient girl (125)\n🐶 Slow sensual doggy (130)\n🛏️ Ride pillow & MOAN (139)\n🔥 Get naked (188)\n💦 Pussy fingering (234)\n🍆 Blowjob (300)\n🍑 Butt plug in, please (445)\n🪄 Lush / Nora Control 5 min (550)\n💐 Buy me flowers (555)\n📱 Get my Snapchat (666)\n💖 Lush / Nora Control 10 min (900)\n🎁 Buy me a gift (1234)\n💍 Marry me (6669)\n👑 Day off Queen (10000)"
+        "\nEXAMPLES OF GOOD POSITIONS (FOLLOW THIS EXACT BILINGUAL FORMAT):"
+        "\n⭐ Pleasure to see you — Приятно тебя видеть"
+        "\n5"
+        "\n😘 Kiss for you — Поцелуй для тебя"
+        "\n7"
+        "\n💌 PM — Личное сообщение"
+        "\n15"
+        "\n🍑 Show & squeeze your tits — Покажи и сожми грудь"
+        "\n105"
+        "\n🔥 Get naked — Раздевайся"
+        "\n188"
+        "\n💦 Pussy fingering — Ласки киски"
+        "\n234"
+        "\n🍆 Blowjob — Минет"
+        "\n300"
+        "\n💐 Buy me flowers — Купи мне цветы"
+        "\n555"
+        "\n💍 Marry me — Женись на мне"
+        "\n6669"
+        "\n👑 Day off Queen — Выходной для королевы"
+        "\n10000"
     )
 
 
@@ -286,7 +306,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
     if platform == "goal":
         system_prompt = (
             "You are a professional 18+ streamer manager. Create a list of EROTIC GOALS for the show. "
-            "FORMAT: ACTION ON ONE LINE, PRICE ON THE NEXT LINE. 1. EXACTLY 10 goals. "
+            "FORMAT: ENGLISH ACTION — RUSSIAN TRANSLATION ON ONE LINE, PRICE ON THE NEXT LINE. 1. EXACTLY 10 goals. "
             "2. Prices MUST BE INCREASING, BUT LOW AND AFFORDABLE (start from 10-15 tokens, max price should not exceed 350 tokens). "
             "3. Actions must be SHORT, CLEAR AND DIRECT. "
             "4. Do NOT use any rules or examples from Tip Menu. This is a separate list."
@@ -298,7 +318,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
     else:
         system_prompt = (
             "You are a professional 18+ streamer manager. Create a Tip Menu. "
-            "FORMAT: ACTION ON ONE LINE, PRICE ON THE NEXT LINE. DO NOT put the price in parentheses, put it strictly on a new line! "
+            "FORMAT: ENGLISH ACTION — RUSSIAN TRANSLATION ON ONE LINE, PRICE ON THE NEXT LINE. DO NOT put the price in parentheses, put it strictly on a new line! "
             "1. EXACTLY 30 positions. 2. First two MUST BE: 'Hello 👋' newline '3', 'One PM, please 💌' newline '7'. "
             "3. Prices STRICTLY INCREASING. Simple actions (winks, whispers) cheap (3-50). Medium (teasing, topless) 50-500. Hardcore (toys, explicit) 500-2500. "
             "4. Logic: from simple to complex. "
@@ -419,4 +439,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-    
