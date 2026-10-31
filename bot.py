@@ -373,6 +373,10 @@ async def switch_to_goal(call: CallbackQuery, state: FSMContext):
         await call.answer("Ошибка: описание потерялось. Нажми 'Главное меню'.", show_alert=True)
         return
 
+    current_platform = data.get("platform", "chaturbate")
+    if current_platform != "goal":
+        await state.update_data(last_platform=current_platform)
+
     await state.update_data(platform="goal")
     await call.answer("Генерирую цели... 🎯")
     await generate_and_send_menu(call.message, "goal", mode, description, previous_text=last_generated, state=state)
