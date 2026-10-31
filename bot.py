@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from logging.handlers import RotatingFileHandler
 import os
 from dotenv import load_dotenv
 load_dotenv() # Загружаем ключи из файла .env
@@ -19,7 +20,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
     handlers=[
-        logging.FileHandler("bot.log", encoding="utf-8"),
+        RotatingFileHandler("bot.log", maxBytes=5*1024*1024, backupCount=3, encoding="utf-8"),
         logging.StreamHandler()
     ]
 )
