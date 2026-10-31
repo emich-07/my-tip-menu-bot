@@ -216,9 +216,31 @@ async def description_received(message: Message, state: FSMContext):
     await message.answer("⏳ Думаю, подожди пару секунд...")
     await generate_and_send_menu(message, platform, mode, description, previous_text=None, state=state)
 
-async def generate_and_send_menu(message: Message, platform: str, mode: str, description: str, previous_text: str = None, state: FSMContext = None):
+@dp.message(MenuForm.reviewing_menu)
+async def revision_received(message: Message, state: FSMContext):
+    data = await state.get_data()
+    previous_text = data.get("last_generated")
+    platform = data.get("platform", "unknown")
+    mode = data.get("mode", "strips")
+    description = data.get("description", "")
+
+    if not previous_text:
+        await message.answer("Не могу найти предыдущее меню. Нажми /start, чтобы начать заново.")
+        return
+
+    revision_request = message.text
+    await message.answer("⏳ Вношу корректировки, подожди пару секунд...")
+    
+    await generate_and_send_menu(
+        message, platform, mode, description,
+        previous_text=previous_text,
+        state=state,
+        revision_request=revision_request
+    )
+
+async def generate_and_send_menu(message: Message, platform: str, mode: str, description: str, previous_text: str = None, state: FSMContext = None, revision_request: str = None):
     avoid_repeat_prompt = ""
-    if previous_text:
+    if previous_text and not revision_request:
         avoid_repeat_prompt = (
             "\nCRITICAL WARNING: The following actions were ALREADY GENERATED. "
             "You are STRICTLY FORBIDDEN from using ANY of these actions, even with different prices or slight wording changes. "
@@ -240,21 +262,13 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
             "If the user says 'striptease', make it upper-body only. If 'dancing', make it a gentle sway."
         )
     elif category == "halloween":
-        category_prompt = (
-            "\nCRITICAL THEME FUSION: The user selected 'Halloween'. Merge the description with Halloween elements (witch, vampire, spooky, costumes)."
-        )
+        category_prompt = "\nCRITICAL THEME FUSION: The user selected 'Halloween'. Merge the description with Halloween elements (witch, vampire, spooky, costumes)."
     elif category == "oil":
-        category_prompt = (
-            "\nCRITICAL THEME FUSION: The user selected 'Oil Show'. Merge the description with oil elements (slippery, massage, baby oil)."
-        )
+        category_prompt = "\nCRITICAL THEME FUSION: The user selected 'Oil Show'. Merge the description with oil elements (slippery, massage, baby oil)."
     elif category == "milk":
-        category_prompt = (
-            "\nCRITICAL THEME FUSION: The user selected 'Milk Show'. Merge the description with milk elements (pouring milk, milk bath)."
-        )
+        category_prompt = "\nCRITICAL THEME FUSION: The user selected 'Milk Show'. Merge the description with milk elements (pouring milk, milk bath)."
     elif category == "outfit":
-        category_prompt = (
-            "\nCRITICAL THEME FUSION: The user selected 'Outfit Change'. Merge the description with clothing elements (lingerie, trying on outfits, unzipping)."
-        )
+        category_prompt = "\nCRITICAL THEME FUSION: The user selected 'Outfit Change'. Merge the description with clothing elements (lingerie, trying on outfits, unzipping)."
 
     # 2. БЛОК РЕЖИМОВ
     if mode == "nonude":
@@ -267,7 +281,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
             "\nIMPORTANT: The model works in 'Strips in free chat' mode. Generate explicit positions with gradual undressing, showing intimate parts, and sexual acts."
         )
 
-    # 3. ОБЩИЕ ПРАВИЛА И ПРИМЕРЫ (Берем твои идеальные примеры)
+    # 3. ОБЩИЕ ПРАВИЛА И ПРИМЕРЫ
     strict_rules = (
         "\nCRITICAL RULES:"
         "\n1. USE STREAMER SLANG: Use terms like 'FAP TAX', 'PUSSY TAX', 'HEELS ON', 'Spam this', 'Fuck machine CTL', 'Lush Control'."
@@ -275,7 +289,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         "\n3. STRICTLY FORBIDDEN to offer real-life meetings or escort services."
         "\n4. DIVERSITY RULE: Do not repeat the same body part (e.g., 'boobs') more than 3 times. Vary the actions."
         "\n5. FORMAT: ENGLISH ACTION — RUSSIAN TRANSLATION ON ONE LINE. THE PRICE MUST BE ON THE NEXT LINE. Example: 'Hello 👋 — Привет 👋' then newline '3'."
-        "\n6. TRANSLATION RULE: The Russian part MUST be a natural, live translation adapted for streamers, NOT a word-for-word machine translation. Use Russian streamer slang where appropriate (e.g., 'PM' → 'личка', not 'личное сообщение'; 'Spanks' → 'шлепки', not 'удары'; 'FAP TAX' → 'налог на дрочку', not 'налог на фап'). If a term has no good Russian equivalent, keep the English term but add a short explanation in parentheses."
+        "\n6. TRANSLATION RULE: The Russian part MUST be a natural, live translation adapted for streamers, NOT a word-for-word machine translation. Use Russian streamer slang where appropriate."
     )
 
     examples = (
@@ -302,8 +316,53 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         "\n10000"
     )
 
-
     # 4. СБОРКА ПРОМПТОВ
+    if revision_request:
+        system_prompt = (
+            "You are a professional 18+ streamer manager. You previously generated this menu:\n"
+            f"{previous_text}\n\n"
+            "The model wants to make the following changes:\n"
+            f"{revision_request}\n\n"
+            "CRITICAL RULES:\n"
+            f"1. {'EXACTLY 10 goals' if platform == 'goal' else 'EXACTLY 30 positions'}.\n"
+            "2. Prices MUST be increasing.\n"
+            "3. FORMAT: ENGLISH ACTION — RUSSIAN TRANSLATION ON ONE LINE, PRICE ON THE NEXT LINE.\n"
+            "4. DO NOT explain your changes. Output ONLY the updated list."
+        )
+        title = f"Обновленный Tip Menu для {platform.capitalize()}" if platform != "goal" else "Обновленные Цели (Goals)"
+        
+        try:
+            response = await ai_client.chat.completions.create(
+                model="cognitivecomputations/dolphin-mistral-24b-venice-edition",
+                messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": "Обнови меню согласно инструкциям."}],
+                temperature=0.7,
+                frequency_penalty=0.5,
+                presence_penalty=0.4
+            )
+            menu_text = response.choices[0].message.content
+            if len(menu_text) > 3800:
+                menu_text = menu_text[:3800] + "\n\n... (текст обрезан)"
+            if state:
+                await state.update_data(last_generated=menu_text)
+
+            buttons = [[InlineKeyboardButton(text="🔄 Сгенерировать заново", callback_data="regen")]]
+            if platform == "goal":
+                buttons.append([InlineKeyboardButton(text="🎁 Создать Tip Menu в этой же тематике", callback_data="switch_to_menu")])
+            else:
+                buttons.append([InlineKeyboardButton(text="🎯 Создать Цели в этой же тематике", callback_data="switch_to_goal")])
+            buttons.append([InlineKeyboardButton(text="🏠 Главное меню", callback_data="main_menu")])
+            kb = InlineKeyboardMarkup(inline_keyboard=buttons)
+
+            await message.answer(
+                f"🔥 <b>Вот твои {title}:</b>\n\n<pre>{menu_text}</pre>",
+                parse_mode="HTML",
+                reply_markup=kb
+            )
+            return
+        except Exception as e:
+            await message.answer(f"❌ Ошибка ИИ: {str(e)}")
+            return
+
     if platform == "goal":
         system_prompt = (
             "You are a professional 18+ streamer manager. Create a list of EROTIC GOALS for the show. "
@@ -320,10 +379,10 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         system_prompt = (
             "You are a professional 18+ streamer manager. Create a Tip Menu. "
             "FORMAT: ENGLISH ACTION — RUSSIAN TRANSLATION ON ONE LINE, PRICE ON THE NEXT LINE. DO NOT put the price in parentheses, put it strictly on a new line! "
-            "1. EXACTLY 30 positions. 2. First two MUST BE: 'Hello 👋' newline '3', 'One PM, please 💌' newline '7'. "
+            "1. EXACTLY 30 positions. 2. First two MUST BE: 'Hello 👋 — Привет 👋' newline '3', 'One PM, please 💌 — Личка 💌' newline '7'. "
             "3. Prices STRICTLY INCREASING. Simple actions (winks, whispers) cheap (3-50). Medium (teasing, topless) 50-500. Hardcore (toys, explicit) 500-2500. "
             "4. Logic: from simple to complex. "
-            "5. The 30th position MUST BE EXACTLY: 'Day off 🛌' newline '10000'."
+            "5. The 30th position MUST BE EXACTLY: 'Day off 🛌 — Выходной 🛌' newline '10000'."
             f"{strict_rules}"
             f"{examples}"
             f"{category_prompt}"
@@ -337,8 +396,8 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         response = await ai_client.chat.completions.create(
             model="cognitivecomputations/dolphin-mistral-24b-venice-edition",
             messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": description}],
-            temperature=0.7,          # Снизили, чтобы не было галлюцинаций (типа слова "traversé")
-            frequency_penalty=0.5,    # Умеренный штраф, чтобы не ломался язык
+            temperature=0.7,
+            frequency_penalty=0.5,
             presence_penalty=0.4
         )
         menu_text = response.choices[0].message.content
@@ -354,7 +413,6 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
             buttons.append([InlineKeyboardButton(text="🎁 Создать Tip Menu в этой же тематике", callback_data="switch_to_menu")])
         else:
             buttons.append([InlineKeyboardButton(text="🎯 Создать Цели в этой же тематике", callback_data="switch_to_goal")])
-        
         buttons.append([InlineKeyboardButton(text="🏠 Главное меню", callback_data="main_menu")])
 
         kb = InlineKeyboardMarkup(inline_keyboard=buttons)
@@ -375,10 +433,10 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         await message.answer(f"❌ Ошибка ИИ: {str(e)}")
 
 
-
 @dp.callback_query(F.data == "regen")
 async def regen_menu(call: CallbackQuery, state: FSMContext):
     data = await state.get_data()
+
     description = data.get("description")
     platform = data.get("platform", "unknown")
     mode = data.get("mode", "strips")
