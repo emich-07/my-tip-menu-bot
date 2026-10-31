@@ -338,11 +338,18 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
 
         kb = InlineKeyboardMarkup(inline_keyboard=buttons)
 
-        await message.answer(
-            f"🔥 <b>Вот твои {title} ({'Ноу нюд' if mode == 'nonude' else 'Фри чат'}):</b>\n\n<pre>{menu_text}</pre>",
-            parse_mode="HTML",
-            reply_markup=kb
-        )
+        try:
+            await message.answer(
+                f"🔥 <b>Вот твои {title} ({'Ноу нюд' if mode == 'nonude' else 'Фри чат'}):</b>\n\n<pre>{menu_text}</pre>",
+                parse_mode="HTML",
+                reply_markup=kb
+            )
+        except Exception as e:
+            logging.warning(f"Ошибка отправки HTML: {e}. Отправляю как обычный текст.")
+            await message.answer(
+                f"🔥 Вот твои {title} ({'Ноу нюд' if mode == 'nonude' else 'Фри чат'}):\n\n{menu_text}",
+                reply_markup=kb
+            )
     except Exception as e:
         await message.answer(f"❌ Ошибка ИИ: {str(e)}")
 
