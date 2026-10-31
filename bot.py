@@ -33,7 +33,7 @@ ai_client = AsyncOpenAI(
     api_key=AI_KEY,
 )
 
-bot = Bot(token=BOT_TOKEN)
+bot = Bot(token=BOT_TOKEN, timeout=30)
 dp = Dispatcher(storage=MemoryStorage())
 
 class MenuForm(StatesGroup):
