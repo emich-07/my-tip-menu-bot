@@ -394,7 +394,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
     # 5. ЗАПРОС К ИИ
     try:
         response = await ai_client.chat.completions.create(
-            model="cognitivecomputations/dolphin-mistral-24b-venice-edition",
+            model="openai",
             messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": description}],
             temperature=0.7,
             frequency_penalty=0.5,
