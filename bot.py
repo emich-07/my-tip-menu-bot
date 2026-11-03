@@ -333,7 +333,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         
         try:
             response = await ai_client.chat.completions.create(
-                model="cognitivecomputations/dolphin-mistral-24b-venice-edition",
+                model="openrouter/free",
                 messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": "Обнови меню согласно инструкциям."}],
                 temperature=0.7,
                 frequency_penalty=0.5,
