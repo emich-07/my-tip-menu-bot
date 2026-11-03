@@ -31,7 +31,7 @@ AI_KEY = os.getenv("AI_KEY")
 
 ai_client = AsyncOpenAI(
     base_url="https://gen.pollinations.ai/v1",
-    api_key="dummy_key",
+    api_key="sk_BGUFmk3diYpp6CFyD0xOAt8V0rNJaprn",
 )
 
 bot = Bot(token=BOT_TOKEN, timeout=30)
