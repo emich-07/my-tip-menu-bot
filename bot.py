@@ -30,8 +30,8 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 AI_KEY = os.getenv("AI_KEY")
 
 ai_client = AsyncOpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=AI_KEY,
+    base_url="https://text.pollinations.ai/openai",
+    api_key="dummy_key",
 )
 
 bot = Bot(token=BOT_TOKEN, timeout=30)
@@ -333,7 +333,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         
         try:
             response = await ai_client.chat.completions.create(
-                model="openrouter/free",
+                model="openai",
                 messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": "Обнови меню согласно инструкциям."}],
                 temperature=0.7,
                 frequency_penalty=0.5,
