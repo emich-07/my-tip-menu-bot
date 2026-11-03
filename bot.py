@@ -30,7 +30,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 AI_KEY = os.getenv("AI_KEY")
 
 ai_client = AsyncOpenAI(
-    base_url="https://text.pollinations.ai/openai",
+    base_url="https://text.pollinations.ai/",
     api_key="dummy_key",
 )
 
