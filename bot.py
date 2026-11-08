@@ -333,6 +333,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         
         try:
             response = await ai_client.chat.completions.create(
+                extra_headers={"Pollinations-Safe": "false"},
                 model="openai",
                 messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": "Обнови меню согласно инструкциям."}],
                 temperature=0.7,
@@ -394,6 +395,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
     # 5. ЗАПРОС К ИИ
     try:
         response = await ai_client.chat.completions.create(
+            extra_headers={"Pollinations-Safe": "false"},
             model="openai",
             messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": description}],
             temperature=0.7,
