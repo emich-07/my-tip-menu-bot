@@ -401,6 +401,29 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         "\nTake day off in SPA baby — Возьми выходной в СПА, детка"
         "\n10000"
     )
+    goal_examples = (
+        "\nEXAMPLE OF PERFECT GOALS (FOLLOW THIS FORMAT AND STYLE):"
+        "\n🎯 Get to know me better — Узнай меня поближе"
+        "\n15"
+        "\n🎯 Flash my smile — Покажи мою улыбку"
+        "\n25"
+        "\n🎯 Play with my hair — Поиграй с моими волосами"
+        "\n50"
+        "\n🎯 Show some cleavage — Покажи ложбинку"
+        "\n90"
+        "\n🎯 Spank me 5 times — Шлепни меня 5 раз"
+        "\n120"
+        "\n🎯 Tell me a secret — Расскажи мне секрет"
+        "\n150"
+        "\n🎯 Toy control for 3 min — Управляй игрушкой 3 минуты"
+        "\n200"
+        "\n🎯 Take off my top — Сними с меня верх"
+        "\n250"
+        "\n🎯 Vibrate on high for 1 min — Вибрация на максимум 1 минуту"
+        "\n300"
+        "\n🎯 My wish: new outfit — Мое желание: новый наряд"
+        "\n350"
+    )
 
     # 4. СБОРКА ПРОМПТОВ
     if revision_request:
@@ -452,7 +475,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
         except Exception as e:
             await message.answer(f"❌ Ошибка ИИ: {str(e)}")
             return
-
+            
     if platform == "goal":
         system_prompt = (
             "You are a professional 18+ streamer manager. Create a list of EROTIC GOALS for the show. "
@@ -460,6 +483,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
             "2. Prices MUST BE INCREASING, BUT LOW AND AFFORDABLE (start from 10-15 tokens, max price should not exceed 350 tokens). "
             "3. Actions must be SHORT, CLEAR AND DIRECT. "
             "4. Do NOT use any rules or examples from Tip Menu. This is a separate list."
+            f"{goal_examples}"
             f"{category_prompt}"
             f"{mode_prompt}"
             f"{avoid_repeat_prompt}"
