@@ -238,7 +238,7 @@ async def revision_received(message: Message, state: FSMContext):
         revision_request=revision_request
     )
 
-async def generate_and_send_menu(message: Message, platform: str, mode: str, description: str, previous_text: str = None, state: FSMContext = None, revision_request: str = None):
+async def generate_and_send_menu(message: Message, platform: str, mode: str, description: str, previous_text: str = None, state: FSMContext = None, revision_request: str = None, category: str = None):
     avoid_repeat_prompt = ""
     if previous_text and not revision_request:
         avoid_repeat_prompt = (
@@ -556,13 +556,13 @@ async def regen_menu(call: CallbackQuery, state: FSMContext):
     platform = data.get("platform", "unknown")
     mode = data.get("mode", "strips")
     last_generated = data.get("last_generated")
-
+    category = data.get("category", "None")
     if not description:
         await call.answer("Не могу найти описание. Нажми 'Главное меню'.", show_alert=True)
         return
 
     await call.answer("Генерирую новый вариант... 🔄")
-    await generate_and_send_menu(call.message, platform, mode, description, previous_text=last_generated, state=state)
+    await generate_and_send_menu(call.message, platform, mode, description, previous_text=last_generated, state=state, category=category)
 
 @dp.callback_query(F.data == "switch_to_goal")
 async def switch_to_goal(call: CallbackQuery, state: FSMContext):
