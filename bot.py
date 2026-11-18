@@ -160,7 +160,7 @@ async def category_chosen(call: CallbackQuery, state: FSMContext):
     )
 
     cat_names = {
-        "period": "🩸 Шоу для месячных", "halloween": "🎃 Хэллоуин", 
+        "period": "🔴 Шоу для месячных", "halloween": "🎄 Новый год", 
         "oil": "🛢️ Шоу с маслом", "milk": "🥛 Шоу с молоком", 
         "outfit": "👗 Смена одежды", "None": "✨ Без тематики"
     }
