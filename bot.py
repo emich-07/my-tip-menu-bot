@@ -127,7 +127,7 @@ async def platform_chosen(call: CallbackQuery, state: FSMContext):
     category_keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="🩸 Шоу для месячных", callback_data="category:period")],
-            [InlineKeyboardButton(text="🎃 Под Хэллоуин", callback_data="category:halloween")],
+            [InlineKeyboardButton(text="🎄 Новый год", callback_data="category:halloween")],
             [InlineKeyboardButton(text="🛢️ Шоу с маслом", callback_data="category:oil")],
             [InlineKeyboardButton(text="🥛 Шоу с молоком", callback_data="category:milk")],
             [InlineKeyboardButton(text="👗 Шоу со сменой одежды", callback_data="category:outfit")],
@@ -262,7 +262,7 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
             "If the user says 'striptease', make it upper-body only. If 'dancing', make it a gentle sway."
         )
     elif category == "halloween":
-        category_prompt = "\nCRITICAL THEME FUSION: The user selected 'Halloween'. Merge the description with Halloween elements (witch, vampire, spooky, costumes)."
+        category_prompt = "\nCRITICAL THEME FUSION: The user selected 'New Year'. Merge the description with New Year elements (Santa, Christmas tree, gifts, snow, champagne, festive lights)."
     elif category == "oil":
         category_prompt = "\nCRITICAL THEME FUSION: The user selected 'Oil Show'. Merge the description with oil elements (slippery, massage, baby oil)."
     elif category == "milk":
