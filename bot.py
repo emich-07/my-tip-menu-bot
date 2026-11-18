@@ -327,7 +327,8 @@ async def generate_and_send_menu(message: Message, platform: str, mode: str, des
             f"1. {'EXACTLY 10 goals' if platform == 'goal' else 'EXACTLY 30 positions'}.\n"
             "2. Prices MUST be increasing.\n"
             "3. FORMAT: ENGLISH ACTION — RUSSIAN TRANSLATION ON ONE LINE, PRICE ON THE NEXT LINE.\n"
-            "4. DO NOT explain your changes. Output ONLY the updated list."
+            "4. DO NOT explain your changes. Output ONLY the updated list.\n"
+            "5. STRICTLY FOLLOW THE USER'S REVISION REQUEST. If the user asks to REMOVE specific items (e.g., toys), DELETE them completely and DO NOT add new items to replace them. Keep the total number of positions exactly as requested."
         )
         title = f"Обновленный Tip Menu для {platform.capitalize()}" if platform != "goal" else "Обновленные Цели (Goals)"
         
