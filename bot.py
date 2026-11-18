@@ -103,25 +103,6 @@ async def platform_chosen(call: CallbackQuery, state: FSMContext):
     names = {"chaturbate": "Chaturbate", "stripchat": "Stripchat", "goal": "Цели во фри (Goal)"}
     platform_name = names.get(platform, platform)
 
-    # ЕСЛИ ЭТО ЦЕЛИ - СРАЗУ ИДЕМ В ВЫБОР РЕЖИМА (БЕЗ КАТЕГОРИЙ)
-    if platform == "goal":
-        await state.update_data(category="None")
-        await state.set_state(MenuForm.choosing_mode)
-        mode_keyboard = InlineKeyboardMarkup(
-            inline_keyboard=[
-                [InlineKeyboardButton(text="🔥 Модель раздевается во фри чате", callback_data="mode:strips")],
-                [InlineKeyboardButton(text="👗 Модель Ноу нюд (без обнажения)", callback_data="mode:nonude")],
-                [InlineKeyboardButton(text="🏠 Главное меню", callback_data="main_menu")]
-            ]
-        )
-        await call.message.edit_text(
-            f"✅ Ты выбрала: <b>{platform_name}</b>\n\n"
-            "Теперь выбери режим работы модели:",
-            parse_mode="HTML",
-            reply_markup=mode_keyboard
-        )
-        return
-
     # ЕСЛИ ЭТО TIP MENU - ПОКАЗЫВАЕМ КАТЕГОРИИ
     await state.set_state(MenuForm.choosing_category)
     category_keyboard = InlineKeyboardMarkup(
@@ -138,7 +119,7 @@ async def platform_chosen(call: CallbackQuery, state: FSMContext):
 
     await call.message.edit_text(
         f"✅ Ты выбрала: <b>{platform_name}</b>\n\n"
-        "Выбери тематику для Tip Menu (или пропусти этот шаг):",
+        "Выбери тематику (или пропусти этот шаг):",
         parse_mode="HTML",
         reply_markup=category_keyboard
     )
